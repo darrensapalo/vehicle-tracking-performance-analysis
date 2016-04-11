@@ -84,7 +84,7 @@ public class GUI extends JFrame implements KeyListener {
 
     private void loadClassification(Classification classification) {
 
-        id.setText(String.valueOf(index + 1));
+        id.setText(String.valueOf(index + 1) + " [" + classification.id() + "]");
 
         ImageIcon image = new ImageIcon(classification.raw.toString());
         rawImage.setIcon(image);
@@ -98,35 +98,28 @@ public class GUI extends JFrame implements KeyListener {
         uhiImage.setIcon(image);
         uhiImage.setSize(new Dimension(image.getIconWidth(), image.getIconHeight()));
 
-        classificationValue.setText(getClassification(classification));
-    }
+        String result;
 
-    private String getClassification(Classification classification) {
-        File f = new File(classification.xml.toString());
-        int classif = -1;
-        try {
-            Scanner s = new Scanner(f);
-            while (s.hasNextLine()){
-                String line = s.nextLine();
-                if (line.contains("class"))
-                {
-                    line = line.replace("<class>", "");
-                    line = line.replace("</class>", "");
-                    classif = Integer.parseInt(line);
-                }
+        int trueClassification = classification.getTrueClassification();
+
+        boolean correct = classification.getClassification() == trueClassification;
+
+        if (trueClassification >= 0 && trueClassification <= 6) {
+
+            if (correct)
+                result = "(correct)";
+            else {
+                result = "(should be " + Classification.getReadableClassification(trueClassification) + ")";
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
-        switch (classif){
-            case 1: return "Sedan";
-            case 2: return "Bus";
-            case 3: return "Jeep";
-            case 4: return "Truck";
-            case 5: return "SUV";
-            case 6: return "Others";
-        }
-        return "N/A";
+        else if (trueClassification == 100)
+            result = "(Occlusion)";
+        else if (trueClassification == 200)
+            result = "(Incorrect seg)";
+        else
+            result = "";
+
+        classificationValue.setText(classification.getReadableClassification() + " " + result);
     }
 
     @Override
@@ -146,8 +139,44 @@ public class GUI extends JFrame implements KeyListener {
                 index--;
                 loadClassification(classifications.get(index));
             }
+        }else if (e.getKeyCode() == KeyEvent.VK_1){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(1);
+            loadClassification(classifications.get(index));
+        }else if (e.getKeyCode() == KeyEvent.VK_2){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(2);
+            loadClassification(classifications.get(index));
+        }else if (e.getKeyCode() == KeyEvent.VK_3){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(3);
+            loadClassification(classifications.get(index));
+        }else if (e.getKeyCode() == KeyEvent.VK_4){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(4);
+            loadClassification(classifications.get(index));
+        }else if (e.getKeyCode() == KeyEvent.VK_5){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(5);
+            loadClassification(classifications.get(index));
+        }else if (e.getKeyCode() == KeyEvent.VK_6){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(6);
+            loadClassification(classifications.get(index));
+        }else if (e.getKeyCode() == KeyEvent.VK_O){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(100);
+            loadClassification(classifications.get(index));
+        }else if (e.getKeyCode() == KeyEvent.VK_E){
+            Classification c = getCurrentClassification();
+            c.setTrueClassification(200);
+            loadClassification(classifications.get(index));
         }
 
+    }
+
+    private Classification getCurrentClassification() {
+        return classifications.get(index);
     }
 
     @Override

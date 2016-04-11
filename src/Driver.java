@@ -15,7 +15,7 @@ public class Driver {
     public static void main(String[] args) {
         Path path;
         if (args.length == 0)
-            path = Paths.get("D:\\Computer Vision video datasets\\classifications\\per class");
+            path = Paths.get("/Users/darrenkarlsapalo/Dropbox/School/Graduate/AY 2015-2016/TERM 2 - Jan to Apr/VISION/classifications");
         else
             path = Paths.get(args[0]);
 
@@ -38,6 +38,26 @@ public class Driver {
             e.printStackTrace();
         }
 
-        GUI gui = new GUI(classifications);
+        // GUI gui = new GUI(classifications);
+        PerformanceAnalyzer performanceAnalyzer = new PerformanceAnalyzer(classifications);
+
+        performanceAnalyzer.analyzeConfusionMatrix(1);
+        performanceAnalyzer.analyzeConfusionMatrix(2);
+        performanceAnalyzer.analyzeConfusionMatrix(3);
+        performanceAnalyzer.analyzeConfusionMatrix(4);
+        performanceAnalyzer.analyzeConfusionMatrix(5);
+        performanceAnalyzer.analyzeConfusionMatrix(6);
+
+        long occlusions = classifications.stream()
+                .filter(f -> f.getTrueClassification() == 100)
+                .count();
+
+        long errors = classifications.stream()
+                .filter(f -> f.getTrueClassification() == 200)
+                .count();
+
+        System.out.println("Occlusions detected: " + occlusions);
+        System.out.println("Erroneous segmentations detected (no vehicles): " + errors);
+
     }
 }
