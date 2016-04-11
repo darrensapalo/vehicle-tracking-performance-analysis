@@ -57,11 +57,11 @@ public class PerformanceAnalyzer {
         System.out.printf("Actual YES    %10d       %10d\n", falseNegative, truePositive);
 
         System.out.println();
-        System.out.printf("Accuracy: %.2f\n", (double)(truePositive + trueNegative) / total);
-        System.out.printf("Error rate: %.2f\n", (1 - (double)(truePositive + trueNegative) / total));
-        System.out.printf("Recall: %.2f\n", (truePositive / (double)(truePositive + falseNegative)));
-        System.out.printf("Specificity: %.2f\n", (trueNegative / (double)(trueNegative+ falsePositive)));
-        System.out.printf("Precision: %.2f\n", (truePositive / (double)(truePositive + falsePositive)));
+        System.out.printf("Accuracy: %.4f\n", (double)(truePositive + trueNegative) / total);
+        System.out.printf("Error rate: %.4f\n", (1 - (double)(truePositive + trueNegative) / total));
+        System.out.printf("Recall: %.4f\n", (truePositive / (double)(truePositive + falseNegative)));
+        System.out.printf("Specificity: %.4f\n", (trueNegative / (double)(trueNegative+ falsePositive)));
+        System.out.printf("Precision: %.4f\n", (truePositive / (double)(truePositive + falsePositive)));
         System.out.println();
     }
 
